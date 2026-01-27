@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Global Goods Essentials</title>
+    <title>The Big Essentials Store | 50+ Items</title>
     <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            background-color: #f0f2f5;
+        :root {
+            --primary: #2c3e50;
+            --accent: #27ae60;
+            --bg: #f4f7f6;
         }
 
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: var(--bg); }
+        
         header {
-            background: #1a1a1a;
+            background: var(--primary);
             color: white;
             padding: 1rem 5%;
             display: flex;
@@ -20,181 +22,189 @@
             align-items: center;
             position: sticky;
             top: 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
-        .category-banner {
-            background: #fff;
-            padding: 15px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 20px;
+        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
+
+        /* Search & Filter Bar */
+        .controls {
+            margin-bottom: 30px;
+            display: flex;
+            gap: 10px;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
+        input[type="text"] {
+            flex-grow: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
         }
 
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 20px;
         }
 
         .product-card {
             background: white;
-            border-radius: 10px;
+            border-radius: 12px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            transition: 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
             display: flex;
             flex-direction: column;
         }
 
-        .product-card:hover {
-            transform: translateY(-8px);
-        }
+        .product-card:hover { transform: translateY(-5px); }
 
         .product-card img {
             width: 100%;
-            height: 180px;
+            height: 150px;
             object-fit: cover;
+            background: #eee;
         }
 
-        .info {
-            padding: 15px;
-            flex-grow: 1;
-        }
+        .info { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
+        
+        .cat { font-size: 0.7rem; color: #888; text-transform: uppercase; font-weight: bold; }
+        
+        h3 { margin: 5px 0; font-size: 1rem; height: 40px; overflow: hidden; }
 
-        .category-tag {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            color: #3498db;
-            font-weight: bold;
-        }
-
-        h3 {
-            margin: 5px 0;
-            font-size: 1.1rem;
-        }
-
-        .price {
-            font-weight: bold;
-            color: #2ecc71;
-            font-size: 1.2rem;
-            margin-bottom: 15px;
-        }
+        .price { font-weight: bold; color: var(--accent); margin-bottom: 10px; }
 
         button {
-            background: #27ae60;
+            background: var(--accent);
             color: white;
             border: none;
-            padding: 12px;
-            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
-            transition: 0.2s;
         }
 
-        button:hover {
-            background: #219150;
-        }
+        button:hover { background: #219150; }
 
-        .cart-status {
-            background: #f39c12;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
+        .cart-btn { background: #e67e22; padding: 10px 20px; border-radius: 20px; color: white; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <header>
-    <h2>🌍 Global Goods</h2>
-    <div class="cart-status">Cart: <span id="cart-count">0</span></div>
+    <h1>SuperStore 50</h1>
+    <div class="cart-btn">🛒 Cart: <span id="cart-count">0</span></div>
 </header>
 
-<div class="category-banner">
-    <strong>Free shipping</strong> on orders over $50! 🚚
-</div>
-
 <div class="container">
-    <div class="product-grid">
-        
-        <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1560023907-5f339617ea30?q=80&w=400" alt="Water">
-            <div class="info">
-                <span class="category-tag">Beverage</span>
-                <h3>Sparkling Water</h3>
-                <p class="price">$1.20</p>
-                <button onclick="addToCart('Sparkling Water', 1.20)">Add to Cart</button>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=400" alt="Fruit">
-            <div class="info">
-                <span class="category-tag">Produce</span>
-                <h3>Organic Bananas</h3>
-                <p class="price">$0.89</p>
-                <button onclick="addToCart('Bananas', 0.89)">Add to Cart</button>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1612182062633-9ff3b3598e96?q=80&w=400" alt="Rice">
-            <div class="info">
-                <span class="category-tag">Pantry</span>
-                <h3>Basmati Rice (1kg)</h3>
-                <p class="price">$4.50</p>
-                <button onclick="addToCart('Basmati Rice', 4.50)">Add to Cart</button>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?q=80&w=400" alt="Pens">
-            <div class="info">
-                <span class="category-tag">Stationery</span>
-                <h3>Gel Pen Set (5ct)</h3>
-                <p class="price">$3.25</p>
-                <button onclick="addToCart('Gel Pens', 3.25)">Add to Cart</button>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=400" alt="Bread">
-            <div class="info">
-                <span class="category-tag">Bakery</span>
-                <h3>Artisan Sourdough</h3>
-                <p class="price">$5.00</p>
-                <button onclick="addToCart('Sourdough Bread', 5.00)">Add to Cart</button>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <img src="https://images.unsplash.com/photo-1584622781564-1d9876a13d00?q=80&w=400" alt="Soap">
-            <div class="info">
-                <span class="category-tag">Home</span>
-                <h3>Lavender Hand Soap</h3>
-                <p class="price">$6.50</p>
-                <button onclick="addToCart('Hand Soap', 6.50)">Add to Cart</button>
-            </div>
-        </div>
-
+    <div class="controls">
+        <input type="text" id="searchBar" placeholder="Search 50+ items (e.g. 'Apple', 'Pen', 'Milk')..." onkeyup="filterProducts()">
     </div>
+
+    <div class="product-grid" id="mainGrid">
+        </div>
 </div>
 
 <script>
-    let count = 0;
-    function addToCart(item, price) {
-        count++;
-        document.getElementById('cart-count').innerText = count;
-        console.log(`Added ${item} - Total Items: ${count}`);
+    // THE PRODUCT DATABASE (50 Items)
+    const products = [
+        // FRESH PRODUCE
+        { name: "Red Apples", price: 2.50, cat: "Food", img: "https://images.unsplash.com/photo-1560806887-1e4cd0b6bccb?w=300" },
+        { name: "Bananas", price: 0.99, cat: "Food", img: "https://images.unsplash.com/photo-1603833665858-e81b1c7e4460?w=300" },
+        { name: "Carrots", price: 1.20, cat: "Food", img: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=300" },
+        { name: "Broccoli", price: 1.80, cat: "Food", img: "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=300" },
+        { name: "Strawberries", price: 3.50, cat: "Food", img: "https://images.unsplash.com/photo-1464965211904-c72145fd735a?w=300" },
+        { name: "Avocado", price: 2.00, cat: "Food", img: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=300" },
+        { name: "Blueberries", price: 4.00, cat: "Food", img: "https://images.unsplash.com/photo-1498557850523-fd3d118b962e?w=300" },
+        { name: "Spinach", price: 2.20, cat: "Food", img: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=300" },
+        { name: "Oranges", price: 3.00, cat: "Food", img: "https://images.unsplash.com/photo-1547514701-42782101795e?w=300" },
+        { name: "Lemons", price: 0.50, cat: "Food", img: "https://images.unsplash.com/photo-1582979512210-99b6a53386f9?w=300" },
+
+        // DRINKS
+        { name: "Mineral Water", price: 1.00, cat: "Drink", img: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=300" },
+        { name: "Orange Juice", price: 3.50, cat: "Drink", img: "https://images.unsplash.com/photo-1613478223719-2ab3026248a4?w=300" },
+        { name: "Green Tea", price: 2.80, cat: "Drink", img: "https://images.unsplash.com/photo-1523910088395-d7457f8ee315?w=300" },
+        { name: "Coffee Beans", price: 12.00, cat: "Drink", img: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=300" },
+        { name: "Milk (1L)", price: 1.50, cat: "Drink", img: "https://images.unsplash.com/photo-1563636619-e91000f21fca?w=300" },
+        { name: "Soda", price: 1.25, cat: "Drink", img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=300" },
+        { name: "Coconut Water", price: 2.50, cat: "Drink", img: "https://images.unsplash.com/photo-1543362905-f2423ef4e0f8?w=300" },
+        { name: "Apple Cider", price: 4.50, cat: "Drink", img: "https://images.unsplash.com/photo-1571120223730-802526e86483?w=300" },
+        { name: "Energy Drink", price: 2.99, cat: "Drink", img: "https://images.unsplash.com/photo-1622543925917-763c34d1538c?w=300" },
+        { name: "Sparkling Water", price: 1.75, cat: "Drink", img: "https://images.unsplash.com/photo-1559839914-17aae19cea9e?w=300" },
+
+        // PANTRY
+        { name: "Pasta (500g)", price: 1.80, cat: "Pantry", img: "https://images.unsplash.com/photo-1551462147-37885abb3e91?w=300" },
+        { name: "Basmati Rice", price: 5.00, cat: "Pantry", img: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=300" },
+        { name: "Honey", price: 6.50, cat: "Pantry", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300" },
+        { name: "Olive Oil", price: 8.00, cat: "Pantry", img: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=300" },
+        { name: "Peanut Butter", price: 3.50, cat: "Pantry", img: "https://images.unsplash.com/photo-1590301157890-4810ed352733?w=300" },
+        { name: "Cereal", price: 4.20, cat: "Pantry", img: "https://images.unsplash.com/photo-1521483451569-e33803c0330c?w=300" },
+        { name: "Tomato Sauce", price: 2.10, cat: "Pantry", img: "https://images.unsplash.com/photo-162070612211c-61944acc8ad7?w=300" },
+        { name: "Flour (1kg)", price: 1.40, cat: "Pantry", img: "https://images.unsplash.com/photo-1627485750574-3151f1532051?w=300" },
+        { name: "Sugar", price: 1.10, cat: "Pantry", img: "https://images.unsplash.com/photo-1622205313162-be1d5712a43f?w=300" },
+        { name: "Salt", price: 0.80, cat: "Pantry", img: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=300" },
+
+        // STATIONERY
+        { name: "Blue Ink Pen", price: 0.50, cat: "Office", img: "https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=300" },
+        { name: "Notebook A5", price: 4.00, cat: "Office", img: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=300" },
+        { name: "Pencil Set", price: 2.50, cat: "Office", img: "https://images.unsplash.com/photo-1516962080544-eac695c93791?w=300" },
+        { name: "Highlighters", price: 3.20, cat: "Office", img: "https://images.unsplash.com/photo-1590311825124-73ec52331a44?w=300" },
+        { name: "Eraser", price: 0.30, cat: "Office", img: "https://images.unsplash.com/photo-1586151162731-462df459ed9b?w=300" },
+        { name: "Paper Clips", price: 1.50, cat: "Office", img: "https://images.unsplash.com/photo-1512314889357-e157c22f938d?w=300" },
+        { name: "Stapler", price: 5.50, cat: "Office", img: "https://images.unsplash.com/photo-1594541818212-9b93192074d2?w=300" },
+        { name: "Scissors", price: 3.00, cat: "Office", img: "https://images.unsplash.com/photo-1503792505511-7393e9897184?w=300" },
+        { name: "Sticky Notes", price: 2.00, cat: "Office", img: "https://images.unsplash.com/photo-1511112467145-662580556209?w=300" },
+        { name: "Calculator", price: 15.00, cat: "Office", img: "https://images.unsplash.com/photo-1574607383476-f517f220d398?w=300" },
+
+        // HOME & PERSONAL CARE
+        { name: "Hand Soap", price: 5.00, cat: "Home", img: "https://images.unsplash.com/photo-1584622781564-1d9876a13d00?w=300" },
+        { name: "Dish Soap", price: 3.50, cat: "Home", img: "https://images.unsplash.com/photo-1605648916319-cf082f7524a1?w=300" },
+        { name: "Sponges (3ct)", price: 2.00, cat: "Home", img: "https://images.unsplash.com/photo-1584622781514-f63f728f3236?w=300" },
+        { name: "Toilet Paper", price: 6.00, cat: "Home", img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=300" },
+        { name: "Toothbrush", price: 2.50, cat: "Home", img: "https://images.unsplash.com/photo-1607613061116-9120d8dd259c?w=300" },
+        { name: "Toothpaste", price: 3.00, cat: "Home", img: "https://images.unsplash.com/photo-1559594482-f82421b49f54?w=300" },
+        { name: "Shampoo", price: 7.00, cat: "Home", img: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=300" },
+        { name: "Candle", price: 12.00, cat: "Home", img: "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=300" },
+        { name: "Tissues", price: 1.50, cat: "Home", img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=300" },
+        { name: "Batteries AA", price: 8.50, cat: "Home", img: "https://images.unsplash.com/photo-1583241475880-083f84372725?w=300" }
+    ];
+
+    const grid = document.getElementById('mainGrid');
+    let cartCount = 0;
+
+    // Build the store
+    function displayProducts(items) {
+        grid.innerHTML = "";
+        items.forEach(p => {
+            const card = `
+                <div class="product-card">
+                    <img src="${p.img}" alt="${p.name}">
+                    <div class="info">
+                        <span class="cat">${p.cat}</span>
+                        <h3>${p.name}</h3>
+                        <p class="price">$${p.price.toFixed(2)}</p>
+                        <button onclick="addToCart()">Add to Cart</button>
+                    </div>
+                </div>
+            `;
+            grid.innerHTML += card;
+        });
     }
+
+    function addToCart() {
+        cartCount++;
+        document.getElementById('cart-count').innerText = cartCount;
+    }
+
+    function filterProducts() {
+        const query = document.getElementById('searchBar').value.toLowerCase();
+        const filtered = products.filter(p => p.name.toLowerCase().includes(query));
+        displayProducts(filtered);
+    }
+
+    // Initial load
+    displayProducts(products);
 </script>
 
 </body>
