@@ -3,15 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Big Essentials Store | 50+ Items</title>
+    <title>Taiwan Essentials Mega Store</title>
     <style>
         :root {
-            --primary: #2c3e50;
-            --accent: #27ae60;
-            --bg: #f4f7f6;
+            --primary: #1e272e;
+            --accent: #ff3f34;
+            --success: #05c46b;
+            --bg: #f1f2f6;
         }
 
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; background: var(--bg); }
+        body { font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; margin: 0; background: var(--bg); display: flex; flex-direction: column; min-height: 100vh; }
         
         header {
             background: var(--primary);
@@ -23,178 +24,248 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
-        .container { max-width: 1200px; margin: 20px auto; padding: 0 20px; }
-
-        /* Search & Filter Bar */
-        .controls {
-            margin-bottom: 30px;
+        .main-layout {
             display: flex;
-            gap: 10px;
+            flex-grow: 1;
+            padding: 20px;
+            gap: 20px;
         }
 
+        /* Product Section */
+        .store-section { flex: 3; }
+        .controls { margin-bottom: 20px; }
         input[type="text"] {
-            flex-grow: 1;
-            padding: 12px;
+            width: 100%;
+            padding: 15px;
             border: 1px solid #ddd;
             border-radius: 8px;
+            font-size: 1rem;
         }
 
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
         }
 
         .product-card {
             background: white;
-            border-radius: 12px;
+            border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
             display: flex;
             flex-direction: column;
+            transition: 0.2s;
         }
 
-        .product-card:hover { transform: translateY(-5px); }
+        .product-card:hover { transform: scale(1.02); }
 
         .product-card img {
             width: 100%;
-            height: 150px;
+            height: 140px;
             object-fit: cover;
-            background: #eee;
         }
 
-        .info { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
-        
-        .cat { font-size: 0.7rem; color: #888; text-transform: uppercase; font-weight: bold; }
-        
-        h3 { margin: 5px 0; font-size: 1rem; height: 40px; overflow: hidden; }
+        .info { padding: 12px; flex-grow: 1; }
+        .info h3 { margin: 5px 0; font-size: 0.95rem; height: 40px; }
+        .price { color: var(--accent); font-weight: bold; font-size: 1.1rem; margin-bottom: 10px; }
 
-        .price { font-weight: bold; color: var(--accent); margin-bottom: 10px; }
-
-        button {
-            background: var(--accent);
+        .add-btn {
+            background: var(--primary);
             color: white;
             border: none;
-            padding: 10px;
-            border-radius: 6px;
+            padding: 8px;
+            width: 100%;
+            border-radius: 5px;
             cursor: pointer;
-            font-weight: bold;
         }
 
-        button:hover { background: #219150; }
+        /* Checkout Sidebar */
+        .checkout-sidebar {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            min-width: 280px;
+        }
 
-        .cart-btn { background: #e67e22; padding: 10px 20px; border-radius: 20px; color: white; font-weight: bold; }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #eee;
+            padding: 10px 0;
+            font-size: 0.9rem;
+        }
+
+        .total-section {
+            margin-top: 20px;
+            border-top: 2px solid #333;
+            padding-top: 15px;
+        }
+
+        .checkout-btn {
+            background: var(--success);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .checkout-btn:disabled { background: #ccc; cursor: not-allowed; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>SuperStore 50</h1>
-    <div class="cart-btn">🛒 Cart: <span id="cart-count">0</span></div>
+    <h1>🇹🇼 Taiwan Essentials Store</h1>
+    <div>🛒 Items: <span id="cart-count">0</span></div>
 </header>
 
-<div class="container">
-    <div class="controls">
-        <input type="text" id="searchBar" placeholder="Search 50+ items (e.g. 'Apple', 'Pen', 'Milk')..." onkeyup="filterProducts()">
+<div class="main-layout">
+    <div class="store-section">
+        <div class="controls">
+            <input type="text" id="searchBar" placeholder="Search for food, water, or pens..." onkeyup="filterProducts()">
+        </div>
+        <div class="product-grid" id="mainGrid"></div>
     </div>
 
-    <div class="product-grid" id="mainGrid">
+    <aside class="checkout-sidebar">
+        <h2>Your Cart</h2>
+        <div id="cart-items">
+            <p style="color: #888;">Your cart is empty.</p>
         </div>
+        <div class="total-section">
+            <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.2rem;">
+                <span>Total:</span>
+                <span>NT$ <span id="cart-total">0</span></span>
+            </div>
+            <button class="checkout-btn" id="checkoutBtn" disabled onclick="handleCheckout()">Complete Order</button>
+        </div>
+    </aside>
 </div>
 
 <script>
-    // THE PRODUCT DATABASE (50 Items)
     const products = [
-        // FRESH PRODUCE
-        { name: "Red Apples", price: 2.50, cat: "Food", img: "https://images.unsplash.com/photo-1560806887-1e4cd0b6bccb?w=300" },
-        { name: "Bananas", price: 0.99, cat: "Food", img: "https://images.unsplash.com/photo-1603833665858-e81b1c7e4460?w=300" },
-        { name: "Carrots", price: 1.20, cat: "Food", img: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?w=300" },
-        { name: "Broccoli", price: 1.80, cat: "Food", img: "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=300" },
-        { name: "Strawberries", price: 3.50, cat: "Food", img: "https://images.unsplash.com/photo-1464965211904-c72145fd735a?w=300" },
-        { name: "Avocado", price: 2.00, cat: "Food", img: "https://images.unsplash.com/photo-1523049673857-eb18f1d7b578?w=300" },
-        { name: "Blueberries", price: 4.00, cat: "Food", img: "https://images.unsplash.com/photo-1498557850523-fd3d118b962e?w=300" },
-        { name: "Spinach", price: 2.20, cat: "Food", img: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=300" },
-        { name: "Oranges", price: 3.00, cat: "Food", img: "https://images.unsplash.com/photo-1547514701-42782101795e?w=300" },
-        { name: "Lemons", price: 0.50, cat: "Food", img: "https://images.unsplash.com/photo-1582979512210-99b6a53386f9?w=300" },
+        // FOOD & GROCERY (20 Items)
+        { name: "Taiwanese Rice (2kg)", price: 280, cat: "Food", img: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400" },
+        { name: "Organic Bananas", price: 65, cat: "Food", img: "https://images.unsplash.com/photo-1571771894821-ad990241274d?w=400" },
+        { name: "Fresh Fuji Apples", price: 120, cat: "Food", img: "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?w=400" },
+        { name: "Broccoli", price: 45, cat: "Food", img: "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?w=400" },
+        { name: "Free Range Eggs (10pk)", price: 110, cat: "Food", img: "https://images.unsplash.com/photo-1506976785307-8732e854ad03?w=400" },
+        { name: "Whole Milk (1L)", price: 95, cat: "Food", img: "https://images.unsplash.com/photo-1550583724-1255d1426463?w=400" },
+        { name: "Sliced Bread", price: 55, cat: "Food", img: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400" },
+        { name: "Instant Noodles", price: 35, cat: "Food", img: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400" },
+        { name: "Chicken Breast", price: 180, cat: "Food", img: "https://images.unsplash.com/photo-1604503468506-a8da13d82791?w=400" },
+        { name: "Tofu", price: 25, cat: "Food", img: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400" },
+        { name: "Potatoes (1kg)", price: 80, cat: "Food", img: "https://images.unsplash.com/photo-1518977676601-b53f02ac6d31?w=400" },
+        { name: "Cabbage", price: 60, cat: "Food", img: "https://images.unsplash.com/photo-1591196772041-389f41053723?w=400" },
+        { name: "Honey", price: 450, cat: "Food", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400" },
+        { name: "Peanut Butter", price: 160, cat: "Food", img: "https://images.unsplash.com/photo-1590301157890-4810ed352733?w=400" },
+        { name: "Oats", price: 130, cat: "Food", img: "https://images.unsplash.com/photo-1586444248902-2f64eddf13cf?w=400" },
+        { name: "Sea Salt", price: 40, cat: "Food", img: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=400" },
+        { name: "Black Pepper", price: 120, cat: "Food", img: "https://images.unsplash.com/photo-1508747703725-719777137510?w=400" },
+        { name: "Blueberries", price: 150, cat: "Food", img: "https://images.unsplash.com/photo-1498557850523-fd3d118b962e?w=400" },
+        { name: "Greek Yogurt", price: 210, cat: "Food", img: "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400" },
+        { name: "Pasta (500g)", price: 75, cat: "Food", img: "https://images.unsplash.com/photo-1551462147-37885abb3e91?w=400" },
 
-        // DRINKS
-        { name: "Mineral Water", price: 1.00, cat: "Drink", img: "https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=300" },
-        { name: "Orange Juice", price: 3.50, cat: "Drink", img: "https://images.unsplash.com/photo-1613478223719-2ab3026248a4?w=300" },
-        { name: "Green Tea", price: 2.80, cat: "Drink", img: "https://images.unsplash.com/photo-1523910088395-d7457f8ee315?w=300" },
-        { name: "Coffee Beans", price: 12.00, cat: "Drink", img: "https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=300" },
-        { name: "Milk (1L)", price: 1.50, cat: "Drink", img: "https://images.unsplash.com/photo-1563636619-e91000f21fca?w=300" },
-        { name: "Soda", price: 1.25, cat: "Drink", img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=300" },
-        { name: "Coconut Water", price: 2.50, cat: "Drink", img: "https://images.unsplash.com/photo-1543362905-f2423ef4e0f8?w=300" },
-        { name: "Apple Cider", price: 4.50, cat: "Drink", img: "https://images.unsplash.com/photo-1571120223730-802526e86483?w=300" },
-        { name: "Energy Drink", price: 2.99, cat: "Drink", img: "https://images.unsplash.com/photo-1622543925917-763c34d1538c?w=300" },
-        { name: "Sparkling Water", price: 1.75, cat: "Drink", img: "https://images.unsplash.com/photo-1559839914-17aae19cea9e?w=300" },
+        // DRINKS (10 Items)
+        { name: "Mineral Water (600ml)", price: 20, cat: "Drink", img: "https://images.unsplash.com/photo-1523362628742-0c29a4519d6d?w=400" },
+        { name: "Green Tea (No Sugar)", price: 25, cat: "Drink", img: "https://images.unsplash.com/photo-1523910088395-d7457f8ee315?w=400" },
+        { name: "Oolong Tea", price: 30, cat: "Drink", img: "https://images.unsplash.com/photo-1597481499750-3e6b22637e12?w=400" },
+        { name: "Coffee Lattee", price: 65, cat: "Drink", img: "https://images.unsplash.com/photo-1541167760496-162955ed8a9f?w=400" },
+        { name: "Soy Milk", price: 35, cat: "Drink", img: "https://images.unsplash.com/photo-1463453091185-61582044d556?w=400" },
+        { name: "Sparkling Water", price: 35, cat: "Drink", img: "https://images.unsplash.com/photo-1559839914-17aae19cea9e?w=400" },
+        { name: "Tomato Juice", price: 45, cat: "Drink", img: "https://images.unsplash.com/photo-1589733901241-5e55bb028f1b?w=400" },
+        { name: "Sports Drink", price: 30, cat: "Drink", img: "https://images.unsplash.com/photo-1622543925917-763c34d1538c?w=400" },
+        { name: "Guava Juice", price: 50, cat: "Drink", img: "https://images.unsplash.com/photo-1536599424071-0b215a388ba7?w=400" },
+        { name: "Bubble Tea (Kit)", price: 199, cat: "Drink", img: "https://images.unsplash.com/photo-1532768306804-60e28a513614?w=400" },
 
-        // PANTRY
-        { name: "Pasta (500g)", price: 1.80, cat: "Pantry", img: "https://images.unsplash.com/photo-1551462147-37885abb3e91?w=300" },
-        { name: "Basmati Rice", price: 5.00, cat: "Pantry", img: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=300" },
-        { name: "Honey", price: 6.50, cat: "Pantry", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300" },
-        { name: "Olive Oil", price: 8.00, cat: "Pantry", img: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=300" },
-        { name: "Peanut Butter", price: 3.50, cat: "Pantry", img: "https://images.unsplash.com/photo-1590301157890-4810ed352733?w=300" },
-        { name: "Cereal", price: 4.20, cat: "Pantry", img: "https://images.unsplash.com/photo-1521483451569-e33803c0330c?w=300" },
-        { name: "Tomato Sauce", price: 2.10, cat: "Pantry", img: "https://images.unsplash.com/photo-162070612211c-61944acc8ad7?w=300" },
-        { name: "Flour (1kg)", price: 1.40, cat: "Pantry", img: "https://images.unsplash.com/photo-1627485750574-3151f1532051?w=300" },
-        { name: "Sugar", price: 1.10, cat: "Pantry", img: "https://images.unsplash.com/photo-1622205313162-be1d5712a43f?w=300" },
-        { name: "Salt", price: 0.80, cat: "Pantry", img: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?w=300" },
+        // STATIONERY & OFFICE (10 Items)
+        { name: "Gel Pen (Black)", price: 45, cat: "Stationery", img: "https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400" },
+        { name: "Notebook A5", price: 80, cat: "Stationery", img: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=400" },
+        { name: "Pencil Sharpener", price: 30, cat: "Stationery", img: "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400" },
+        { name: "A4 Paper (500ct)", price: 160, cat: "Stationery", img: "https://images.unsplash.com/photo-1586075010620-2b4447477685?w=400" },
+        { name: "Sticky Notes", price: 45, cat: "Stationery", img: "https://images.unsplash.com/photo-1511112467145-662580556209?w=400" },
+        { name: "Stapler", price: 120, cat: "Stationery", img: "https://images.unsplash.com/photo-1594541818212-9b93192074d2?w=400" },
+        { name: "Highlighters", price: 35, cat: "Stationery", img: "https://images.unsplash.com/photo-1590311825124-73ec52331a44?w=400" },
+        { name: "Clear Tape", price: 25, cat: "Stationery", img: "https://images.unsplash.com/photo-1565152843734-e0c1f4340798?w=400" },
+        { name: "Calculator", price: 350, cat: "Stationery", img: "https://images.unsplash.com/photo-1574607383476-f517f220d398?w=400" },
+        { name: "Correction Tape", price: 40, cat: "Stationery", img: "https://images.unsplash.com/photo-1585827363402-39393e878363?w=400" },
 
-        // STATIONERY
-        { name: "Blue Ink Pen", price: 0.50, cat: "Office", img: "https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=300" },
-        { name: "Notebook A5", price: 4.00, cat: "Office", img: "https://images.unsplash.com/photo-1531346878377-a5be20888e57?w=300" },
-        { name: "Pencil Set", price: 2.50, cat: "Office", img: "https://images.unsplash.com/photo-1516962080544-eac695c93791?w=300" },
-        { name: "Highlighters", price: 3.20, cat: "Office", img: "https://images.unsplash.com/photo-1590311825124-73ec52331a44?w=300" },
-        { name: "Eraser", price: 0.30, cat: "Office", img: "https://images.unsplash.com/photo-1586151162731-462df459ed9b?w=300" },
-        { name: "Paper Clips", price: 1.50, cat: "Office", img: "https://images.unsplash.com/photo-1512314889357-e157c22f938d?w=300" },
-        { name: "Stapler", price: 5.50, cat: "Office", img: "https://images.unsplash.com/photo-1594541818212-9b93192074d2?w=300" },
-        { name: "Scissors", price: 3.00, cat: "Office", img: "https://images.unsplash.com/photo-1503792505511-7393e9897184?w=300" },
-        { name: "Sticky Notes", price: 2.00, cat: "Office", img: "https://images.unsplash.com/photo-1511112467145-662580556209?w=300" },
-        { name: "Calculator", price: 15.00, cat: "Office", img: "https://images.unsplash.com/photo-1574607383476-f517f220d398?w=300" },
-
-        // HOME & PERSONAL CARE
-        { name: "Hand Soap", price: 5.00, cat: "Home", img: "https://images.unsplash.com/photo-1584622781564-1d9876a13d00?w=300" },
-        { name: "Dish Soap", price: 3.50, cat: "Home", img: "https://images.unsplash.com/photo-1605648916319-cf082f7524a1?w=300" },
-        { name: "Sponges (3ct)", price: 2.00, cat: "Home", img: "https://images.unsplash.com/photo-1584622781514-f63f728f3236?w=300" },
-        { name: "Toilet Paper", price: 6.00, cat: "Home", img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=300" },
-        { name: "Toothbrush", price: 2.50, cat: "Home", img: "https://images.unsplash.com/photo-1607613061116-9120d8dd259c?w=300" },
-        { name: "Toothpaste", price: 3.00, cat: "Home", img: "https://images.unsplash.com/photo-1559594482-f82421b49f54?w=300" },
-        { name: "Shampoo", price: 7.00, cat: "Home", img: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=300" },
-        { name: "Candle", price: 12.00, cat: "Home", img: "https://images.unsplash.com/photo-1603006905003-be475563bc59?w=300" },
-        { name: "Tissues", price: 1.50, cat: "Home", img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=300" },
-        { name: "Batteries AA", price: 8.50, cat: "Home", img: "https://images.unsplash.com/photo-1583241475880-083f84372725?w=300" }
+        // HOME CARE (10 Items)
+        { name: "Toilet Paper (10ct)", price: 180, cat: "Home", img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400" },
+        { name: "Dish Soap", price: 90, cat: "Home", img: "https://images.unsplash.com/photo-1605648916319-cf082f7524a1?w=400" },
+        { name: "Laundry Detergent", price: 240, cat: "Home", img: "https://images.unsplash.com/photo-1610557892470-55d9e80c0bce?w=400" },
+        { name: "Hand Sanitizer", price: 120, cat: "Home", img: "https://images.unsplash.com/photo-1584622781564-1d9876a13d00?w=400" },
+        { name: "Face Masks (50ct)", price: 250, cat: "Home", img: "https://images.unsplash.com/photo-1586942593568-29361efcd571?w=400" },
+        { name: "Toothbrush", price: 60, cat: "Home", img: "https://images.unsplash.com/photo-1559594482-f82421b49f54?w=400" },
+        { name: "Shampoo", price: 290, cat: "Home", img: "https://images.unsplash.com/photo-1535585209827-a15fcdbc4c2d?w=400" },
+        { name: "Trash Bags", price: 85, cat: "Home", img: "https://images.unsplash.com/photo-1591193512858-12ee99139611?w=400" },
+        { name: "All Purpose Cleaner", price: 140, cat: "Home", img: "https://images.unsplash.com/photo-1584622781514-f63f728f3236?w=400" },
+        { name: "Kitchen Towels", price: 110, cat: "Home", img: "https://images.unsplash.com/photo-1583947582383-a720616b3f74?w=400" }
     ];
 
-    const grid = document.getElementById('mainGrid');
-    let cartCount = 0;
+    let cart = [];
 
-    // Build the store
     function displayProducts(items) {
+        const grid = document.getElementById('mainGrid');
         grid.innerHTML = "";
-        items.forEach(p => {
-            const card = `
+        items.forEach((p, index) => {
+            grid.innerHTML += `
                 <div class="product-card">
                     <img src="${p.img}" alt="${p.name}">
                     <div class="info">
-                        <span class="cat">${p.cat}</span>
                         <h3>${p.name}</h3>
-                        <p class="price">$${p.price.toFixed(2)}</p>
-                        <button onclick="addToCart()">Add to Cart</button>
+                        <p class="price">NT$ ${p.price}</p>
+                        <button class="add-btn" onclick="addToCart('${p.name}', ${p.price})">Add to Cart</button>
                     </div>
                 </div>
             `;
-            grid.innerHTML += card;
         });
     }
 
-    function addToCart() {
-        cartCount++;
-        document.getElementById('cart-count').innerText = cartCount;
+    function addToCart(name, price) {
+        cart.push({ name, price });
+        updateCartUI();
+    }
+
+    function updateCartUI() {
+        const cartItemsDiv = document.getElementById('cart-items');
+        const cartCount = document.getElementById('cart-count');
+        const cartTotal = document.getElementById('cart-total');
+        const checkoutBtn = document.getElementById('checkoutBtn');
+
+        cartCount.innerText = cart.length;
+        
+        if (cart.length === 0) {
+            cartItemsDiv.innerHTML = '<p style="color: #888;">Your cart is empty.</p>';
+            checkoutBtn.disabled = true;
+        } else {
+            cartItemsDiv.innerHTML = "";
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                cartItemsDiv.innerHTML += `
+                    <div class="cart-item">
+                        <span>${item.name}</span>
+                        <span>NT$ ${item.price}</span>
+                    </div>
+                `;
+            });
+            cartTotal.innerText = total;
+            checkoutBtn.disabled = false;
+        }
     }
 
     function filterProducts() {
@@ -203,9 +274,14 @@
         displayProducts(filtered);
     }
 
-    // Initial load
+    function handleCheckout() {
+        const total = document.getElementById('cart-total').innerText;
+        alert(`Order Placed Successfully!\nTotal Amount: NT$ ${total}\nThank you for shopping at Taiwan Essentials!`);
+        cart = [];
+        updateCartUI();
+    }
+
     displayProducts(products);
 </script>
-
 </body>
 </html>
