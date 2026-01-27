@@ -3,155 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Online Essentials Store</title>
+    <title>Global Goods Essentials</title>
     <style>
-        /* CSS: The Design */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0;
-            background-color: #f9f9f9;
-            color: #333;
+            background-color: #f0f2f5;
         }
 
         header {
-            background: #2c3e50;
+            background: #1a1a1a;
             color: white;
-            padding: 1.5rem 5%;
+            padding: 1rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
             z-index: 1000;
         }
 
-        .cart-status {
-            background: #e74c3c;
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-weight: bold;
+        .category-banner {
+            background: #fff;
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
         }
 
         .container {
-            max-width: 1000px;
-            margin: 20px auto;
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 20px;
         }
 
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
         }
 
         .product-card {
             background: white;
-            padding: 20px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: transform 0.2s;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
         }
 
         .product-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
         }
 
         .product-card img {
             width: 100%;
             height: 180px;
             object-fit: cover;
-            border-radius: 8px;
-            margin-bottom: 15px;
+        }
+
+        .info {
+            padding: 15px;
+            flex-grow: 1;
+        }
+
+        .category-tag {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #3498db;
+            font-weight: bold;
+        }
+
+        h3 {
+            margin: 5px 0;
+            font-size: 1.1rem;
         }
 
         .price {
-            font-size: 1.2rem;
-            color: #27ae60;
             font-weight: bold;
-            margin: 10px 0;
+            color: #2ecc71;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
         }
 
         button {
-            background: #3498db;
+            background: #27ae60;
             color: white;
             border: none;
-            padding: 12px 20px;
-            cursor: pointer;
-            border-radius: 6px;
+            padding: 12px;
             width: 100%;
-            font-size: 1rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
         }
 
         button:hover {
-            background: #2980b9;
+            background: #219150;
         }
 
-        footer {
-            text-align: center;
-            padding: 40px;
-            color: #888;
+        .cart-status {
+            background: #f39c12;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>Essentials Shop</h1>
-        <div class="cart-status">🛒 Cart: <span id="cart-count">0</span> items</div>
-    </header>
+<header>
+    <h2>🌍 Global Goods</h2>
+    <div class="cart-status">Cart: <span id="cart-count">0</span></div>
+</header>
 
-    <div class="container">
-        <div class="product-grid">
-            <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400" alt="Water">
-                <h3>Mineral Water</h3>
-                <p>Stay hydrated with fresh spring water.</p>
-                <div class="price">$1.50</div>
-                <button onclick="addToCart('Mineral Water', 1.50)">Add to Cart</button>
-            </div>
+<div class="category-banner">
+    <strong>Free shipping</strong> on orders over $50! 🚚
+</div>
 
-            <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1585336261022-680e295ce3fe?w=400" alt="Pen">
-                <h3>Premium Ink Pen</h3>
-                <p>Smooth writing for office or school.</p>
-                <div class="price">$0.75</div>
-                <button onclick="addToCart('Premium Pen', 0.75)">Add to Cart</button>
-            </div>
-
-            <div class="product-card">
-                <img src="https://images.unsplash.com/photo-1536304953831-ca14255ae2af?w=400" alt="Food">
-                <h3>Healthy Snack Bar</h3>
-                <p>The perfect energy boost for your day.</p>
-                <div class="price">$2.00</div>
-                <button onclick="addToCart('Snack Bar', 2.00)">Add to Cart</button>
+<div class="container">
+    <div class="product-grid">
+        
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1560023907-5f339617ea30?q=80&w=400" alt="Water">
+            <div class="info">
+                <span class="category-tag">Beverage</span>
+                <h3>Sparkling Water</h3>
+                <p class="price">$1.20</p>
+                <button onclick="addToCart('Sparkling Water', 1.20)">Add to Cart</button>
             </div>
         </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=400" alt="Fruit">
+            <div class="info">
+                <span class="category-tag">Produce</span>
+                <h3>Organic Bananas</h3>
+                <p class="price">$0.89</p>
+                <button onclick="addToCart('Bananas', 0.89)">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1612182062633-9ff3b3598e96?q=80&w=400" alt="Rice">
+            <div class="info">
+                <span class="category-tag">Pantry</span>
+                <h3>Basmati Rice (1kg)</h3>
+                <p class="price">$4.50</p>
+                <button onclick="addToCart('Basmati Rice', 4.50)">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1583485088034-697b5bc54ccd?q=80&w=400" alt="Pens">
+            <div class="info">
+                <span class="category-tag">Stationery</span>
+                <h3>Gel Pen Set (5ct)</h3>
+                <p class="price">$3.25</p>
+                <button onclick="addToCart('Gel Pens', 3.25)">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=400" alt="Bread">
+            <div class="info">
+                <span class="category-tag">Bakery</span>
+                <h3>Artisan Sourdough</h3>
+                <p class="price">$5.00</p>
+                <button onclick="addToCart('Sourdough Bread', 5.00)">Add to Cart</button>
+            </div>
+        </div>
+
+        <div class="product-card">
+            <img src="https://images.unsplash.com/photo-1584622781564-1d9876a13d00?q=80&w=400" alt="Soap">
+            <div class="info">
+                <span class="category-tag">Home</span>
+                <h3>Lavender Hand Soap</h3>
+                <p class="price">$6.50</p>
+                <button onclick="addToCart('Hand Soap', 6.50)">Add to Cart</button>
+            </div>
+        </div>
+
     </div>
+</div>
 
-    <footer>
-        <p>&copy; 2026 My Online Store Project</p>
-    </footer>
-
-    <script>
-        // JavaScript: The Functionality
-        let cartCount = 0;
-        let totalPrice = 0;
-
-        function addToCart(itemName, price) {
-            cartCount++;
-            totalPrice += price;
-            
-            // Update the UI
-            document.getElementById('cart-count').innerText = cartCount;
-            
-            // Log the action (In a real store, this would save to a database)
-            console.log(`Added ${itemName} to cart. Total: $${totalPrice.toFixed(2)}`);
-            
-            // Visual feedback
-            alert(`${itemName} has been added! \nTotal items: ${cartCount}`);
-        }
-    </script>
+<script>
+    let count = 0;
+    function addToCart(item, price) {
+        count++;
+        document.getElementById('cart-count').innerText = count;
+        console.log(`Added ${item} - Total Items: ${count}`);
+    }
+</script>
 
 </body>
 </html>
