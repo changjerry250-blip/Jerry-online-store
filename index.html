@@ -57,11 +57,16 @@
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
         
         .product-card { background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
-        .product-card img { width: 100%; height: 180px; object-fit: cover; }
+        .product-card img { 
+            width: 100%; 
+            height: 200px; 
+            object-fit: cover; 
+            background-color: #eee; /* Fallback color */
+        }
         .product-info { padding: 15px; }
         .price { color: var(--accent); font-weight: bold; font-size: 1.2rem; }
 
-        .add-btn { background: var(--primary); color: white; border: none; width: 100%; padding: 10px; border-radius: 6px; cursor: pointer; margin-top: 10px; }
+        .add-btn { background: var(--primary); color: white; border: none; width: 100%; padding: 10px; border-radius: 6px; cursor: pointer; margin-top: 10px; font-weight: bold;}
 
         /* Sidebar & Forms */
         .card { background: var(--white); padding: 20px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
@@ -83,7 +88,7 @@
 <body>
 
 <header>
-    <h1>Jerry's house</h1>
+    <h1>🇹🇼 Taiwan Essentials Mega Store</h1>
     <div>🛒 Items: <span id="cart-count">0</span></div>
 </header>
 
@@ -106,39 +111,39 @@
                     <span>Total:</span>
                     <span>NT$ <span id="cart-total">0</span></span>
                 </div>
-                <button class="add-btn" style="background: var(--success);" onclick="showPage('checkout')">Go to Checkout</button>
+                <button class="add-btn" style="background: var(--success); margin-top: 15px;" onclick="showPage('checkout')">Go to Checkout</button>
             </div>
         </div>
     </div>
 
     <div id="page-checkout" class="page">
         <div style="max-width: 600px; margin: 0 auto;" class="card">
-            <h2>Complete Your Purchase</h2>
-            <div id="checkout-summary" style="margin-bottom: 20px;"></div>
+            <h2>Checkout</h2>
+            <div id="checkout-summary" style="margin-bottom: 20px; padding: 10px; background: #f8f9fa; border-radius: 5px;"></div>
             
-            <label>Full Name</label>
-            <input type="text" id="custName" placeholder="Enter your name">
+            <label>Recipient Name</label>
+            <input type="text" id="custName" placeholder="Enter full name">
             
             <label>Payment Method</label>
             <select id="paymentMethod">
                 <option value="EasyCard">EasyCard (悠遊卡)</option>
-                <option value="Cash">Cash on Delivery</option>
                 <option value="LinePay">LinePay</option>
+                <option value="Cash">Cash on Delivery</option>
             </select>
 
-            <button class="btn-large" id="confirmBtn" onclick="processOrder()">Confirm & Pay</button>
+            <button class="btn-large" id="confirmBtn" onclick="processOrder()">Confirm Purchase</button>
         </div>
     </div>
 
     <div id="page-history" class="page">
-        <h2>Order History</h2>
+        <h2>Your Purchase History</h2>
         <div class="card">
             <table id="historyTable">
                 <thead>
                     <tr>
                         <th>Date</th>
-                        <th>Items</th>
-                        <th>Total</th>
+                        <th>Items Bought</th>
+                        <th>Total Paid</th>
                         <th>Status</th>
                     </tr>
                 </thead>
@@ -152,12 +157,36 @@
 
 <script>
     const products = [
-        { name: "Sticky Notes (Yellow)", price: 45, img: "https://images.unsplash.com/photo-1586075010620-2b4447477685?w=400" },
-        { name: "Ion Sports Drink", price: 30, img: "https://images.unsplash.com/photo-1622543925917-763c34d1538c?w=400" },
-        { name: "Taiwanese Rice (2kg)", price: 270, img: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400" },
-        { name: "Highlighters (3-Pack)", price: 95, img: "https://images.unsplash.com/photo-1590311825124-73ec52331a44?w=400" },
-        { name: "Medical Face Masks", price: 150, img: "https://images.unsplash.com/photo-1586942593568-29361efcd571?w=400" },
-        { name: "Correction Tape", price: 40, img: "https://images.unsplash.com/photo-1585827363402-39393e878363?w=400" }
+        { 
+            name: "Sticky Notes", 
+            price: 45, 
+            img: "http://googleusercontent.com/image_collection/image_retrieval/13700377618104498131_0" 
+        },
+        { 
+            name: "Sports Drink", 
+            price: 30, 
+            img: "http://googleusercontent.com/image_collection/image_retrieval/17736897105438930279_0" 
+        },
+        { 
+            name: "Highlighters (Pack)", 
+            price: 95, 
+            img: "http://googleusercontent.com/image_collection/image_retrieval/12998527378642185047_0" 
+        },
+        { 
+            name: "Correction Tape", 
+            price: 40, 
+            img: "http://googleusercontent.com/image_collection/image_retrieval/13979903056261504027_0" 
+        },
+        { 
+            name: "Taiwanese Rice (2kg)", 
+            price: 270, 
+            img: "https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400" 
+        },
+        { 
+            name: "Medical Face Masks", 
+            price: 150, 
+            img: "https://images.unsplash.com/photo-1586942593568-29361efcd571?w=400" 
+        }
     ];
 
     let cart = [];
@@ -176,7 +205,7 @@
         const grid = document.getElementById('mainGrid');
         grid.innerHTML = products.map(p => `
             <div class="product-card">
-                <img src="${p.img}" alt="${p.name}">
+                <img src="${p.img}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/400x300?text=Image+Loading...'">
                 <div class="product-info">
                     <h3>${p.name}</h3>
                     <p class="price">NT$ ${p.price}</p>
@@ -212,22 +241,22 @@
     function updateCheckoutSummary() {
         const summary = document.getElementById('checkout-summary');
         if (cart.length === 0) {
-            summary.innerHTML = "<p>Your cart is empty! Please add items first.</p>";
+            summary.innerHTML = "<strong>Your cart is empty.</strong>";
             document.getElementById('confirmBtn').disabled = true;
         } else {
             let total = cart.reduce((sum, item) => sum + item.price, 0);
-            summary.innerHTML = `<strong>Items to buy:</strong> ${cart.length}<br><strong>Total Amount:</strong> NT$ ${total}`;
+            summary.innerHTML = `<strong>Items:</strong> ${cart.length}<br><strong>Total:</strong> NT$ ${total}`;
             document.getElementById('confirmBtn').disabled = false;
         }
     }
 
     function processOrder() {
         const name = document.getElementById('custName').value;
-        if (!name) return alert("Please enter your name!");
+        if (!name) return alert("Please enter your name for the record!");
 
         const total = cart.reduce((sum, item) => sum + item.price, 0);
         const order = {
-            date: new Date().toLocaleString(),
+            date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
             items: cart.map(i => i.name).join(", "),
             total: total
         };
@@ -235,7 +264,7 @@
         history.push(order);
         localStorage.setItem('shopHistory', JSON.stringify(history));
         
-        alert(`Thank you, ${name}! Your order has been placed.`);
+        alert(`Order successful! Receipt saved to History.`);
         cart = [];
         updateCartUI();
         showPage('history');
@@ -244,14 +273,14 @@
     function updateHistoryUI() {
         const body = document.getElementById('historyBody');
         if (history.length === 0) {
-            body.innerHTML = '<tr><td colspan="4" style="text-align:center">No purchases yet.</td></tr>';
+            body.innerHTML = '<tr><td colspan="4" style="text-align:center">No previous purchases found.</td></tr>';
         } else {
             body.innerHTML = history.map(h => `
                 <tr>
                     <td>${h.date}</td>
                     <td>${h.items}</td>
                     <td>NT$ ${h.total}</td>
-                    <td><span style="color:var(--success)">● Completed</span></td>
+                    <td><b style="color:var(--success)">✓ Paid</b></td>
                 </tr>
             `).reverse().join('');
         }
