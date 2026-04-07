@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taiwan Essentials Store</title>
+    <title>Jerry's Store</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header>
-    <h1>Jerry Store</h1>
+    <h1>Jerry's Store</h1>
     <div>🛒 Items: <span id="cart-count">0</span></div>
 </header>
 
@@ -20,6 +20,7 @@
 </nav>
 
 <div class="container">
+    
     <div id="page-store" class="page active">
         <div class="store-layout">
             <div class="product-grid" id="mainGrid"></div>
@@ -38,11 +39,14 @@
 
     <div id="page-checkout" class="page">
         <div style="max-width: 600px; margin: 0 auto;" class="card">
-            <h2>Checkout</h2>
+            <h2>Checkout & Delivery</h2>
             <div id="checkout-summary" style="margin-bottom: 20px; padding: 10px; background: #f8f9fa; border-radius: 5px;"></div>
             
             <label>Recipient Name</label>
             <input type="text" id="custName" placeholder="Enter full name">
+
+            <label>Delivery Address</label>
+            <input type="text" id="deliveryAddr" placeholder="Enter your address in Taiwan">
             
             <label>Payment Method</label>
             <select id="paymentMethod">
@@ -62,7 +66,7 @@
                 <thead>
                     <tr>
                         <th>Date</th>
-                        <th>Items Bought</th>
+                        <th>Items & Address</th>
                         <th>Total Paid</th>
                         <th>Status</th>
                     </tr>
