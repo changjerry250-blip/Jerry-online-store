@@ -10,48 +10,37 @@
 
     <header>
         <h1>Big J Online Store</h1>
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="Search for snacks..." onkeyup="filterProducts()">
-        </div>
+        <input type="text" id="searchInput" placeholder="Search snacks..." onkeyup="filterProducts()">
     </header>
 
-    <main>
-        <section id="product-list" class="product-grid"></section>
+    <div class="main-container">
+        <div id="product-list" class="product-grid"></div>
 
-        <aside class="cart-sidebar">
-            <h2>Your Basket</h2>
+        <div class="cart-sidebar">
+            <h2>Your Cart</h2>
             <div id="cart-items-container">
-                <p class="empty-msg">Your cart is empty.</p>
+                <p>Your cart is empty.</p>
             </div>
             <div class="cart-footer">
-                <div class="total-row">
-                    <span>Total:</span>
-                    <span><strong id="total-price">0</strong> NTD</span>
-                </div>
-                <button id="checkout-trigger" onclick="openCheckout()">Place Order</button>
-                <button id="clear-btn" onclick="clearCart()">Clear All</button>
+                <p>Total: <strong id="total-price">0</strong> NTD</p>
+                <button class="place-order-btn" onclick="openCheckout()">Place Order</button>
+                <button class="clear-btn" onclick="clearCart()">Clear All</button>
             </div>
-        </aside>
-    </main>
+        </div>
+    </div>
 
     <div id="checkout-modal" class="modal">
         <div class="modal-content">
-            <h2>Checkout Details</h2>
-            <div class="form-group">
-                <label>Email Address</label>
-                <input type="email" id="customer-email" placeholder="jerry@example.com">
-            </div>
-            <div class="form-group">
-                <label>Payment Method</label>
-                <select id="payment-method">
-                    <option value="Line Pay">Line Pay</option>
-                    <option value="Credit Card">Credit Card</option>
-                    <option value="Cash on Delivery">Cash on Delivery</option>
-                </select>
-            </div>
-            <div class="modal-actions">
-                <button class="confirm-btn" onclick="processOrder()">Confirm Purchase</button>
-                <button class="cancel-btn" onclick="closeModal()">Back</button>
+            <h3>Checkout</h3>
+            <input type="email" id="customer-email" placeholder="Enter your email">
+            <select id="payment-method">
+                <option value="Line Pay">Line Pay</option>
+                <option value="Credit Card">Credit Card</option>
+                <option value="Cash">Cash on Delivery</option>
+            </select>
+            <div class="modal-buttons">
+                <button onclick="processOrder()" class="confirm-btn">Confirm</button>
+                <button onclick="closeModal()">Cancel</button>
             </div>
         </div>
     </div>
