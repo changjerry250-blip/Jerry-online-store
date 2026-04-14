@@ -10,18 +10,27 @@
 
     <header>
         <h1>Big J Online Store</h1>
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="Search snacks or drinks..." onkeyup="filterProducts()">
+        </div>
     </header>
 
     <main>
-        <section id="product-list" class="product-container">
+        <section id="product-list" class="product-grid">
             </section>
 
-        <aside id="cart">
-            <h2>Shopping Cart</h2>
-            <ul id="cart-items"></ul>
-            <hr>
-            <p>Total: <span id="total-price">0</span> NTD</p>
-            <button id="checkout-btn" onclick="checkout()">Checkout</button>
+        <aside class="cart-sidebar">
+            <h2>Your Cart</h2>
+            <div id="cart-items-container">
+                </div>
+            <div class="cart-footer">
+                <div class="total-row">
+                    <span>Total:</span>
+                    <span><strong id="total-price">0</strong> NTD</span>
+                </div>
+                <button id="checkout-btn" onclick="checkout()">Place Order</button>
+                <button id="clear-btn" onclick="clearCart()">Clear All</button>
+            </div>
         </aside>
     </main>
 
