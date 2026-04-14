@@ -1,115 +1,59 @@
 const products = [
-    { name: "Black Tea", price: 25, img: "https://images.unsplash.com/photo-1594631252845-29fc4586c55c?w=400" },
-    { name: "Coke", price: 30, img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400" },
-    { name: "Instant Noodle", price: 45, img: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400" },
-    { name: "Chewing Gum", price: 20, img: "https://images.unsplash.com/photo-1559181567-c3190ca9959b?w=400" }
+    { name: "Dried Mango", price: 30, image: "https://www.luvele.de/blogs/recipe-blog/how-to-dry-mango-in-a-food-dehydrator?srsltid=AfmBOooihz1yNDo00kakt-j3DdN0TaX6wSTFe-IlrqhOCXhLqKT1FRsl" },
+    { name: "Instant Noodle", price: 50, image: "https://www.walmart.com/ip/Nissin-Foods-Top-Ramen-Chicken-Flavor-Cup-Noodles-Chicken-2-25-Oz-12-Carton/1628842946" },
+    { name: "Chips", price: 40, image: "https://www.lays.com/recipes/lays-cheddar-and-chive-mashed-potatoes" },
+    { name: "Coke Cola", price: 25, image: "https://www.istockphoto.com/hk/%E5%9C%96%E7%89%87/coke-can" },
+    { name: "Black Tea", price: 60, image: "https://www.joo.com.tw/service026/index.php?action=product_detail&prod_no=P0123400273993" },
+    { name: "Orange Juice", price: 60, image: "https://www.healthline.com/nutrition/orange-juice" }
 ];
 
 let cart = [];
-let history = JSON.parse(localStorage.getItem('shopHistory')) || [];
-
-function showPage(pageId) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-    document.getElementById('page-' + pageId).classList.add('active');
-    document.getElementById('nav-' + pageId).classList.add('active');
-    if(pageId === 'history') updateHistoryUI();
-    if(pageId === 'checkout') updateCheckoutSummary();
-}
 
 function displayProducts() {
-    const grid = document.getElementById('mainGrid');
-    grid.innerHTML = products.map(p => `
-        <div class="product-card">
-            <img src="${p.img}" alt="${p.name}" onerror="this.src='https://via.placeholder.com/400x300?text=Product'">
-            <div class="product-info">
-                <h3>${p.name}</h3>
-                <p class="price">NT$ ${p.price}</p>
-                <button class="add-btn" onclick="addToCart('${p.name}', ${p.price})">Add to Cart</button>
-            </div>
-        </div>
-    `).join('');
+    const productList = document.getElementById('product-list');
+    products.forEach(product => {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.innerHTML = `
+            <img src="${product.image}" alt="${product.name}">
+            <h3>${product.name}</h3>
+            <p>${product.price} NTD</p>
+            <button onclick="addToCart('${product.name}', ${product.price})">Add to Cart</button>
+        `;
+        productList.appendChild(card);
+    });
 }
 
 function addToCart(name, price) {
     cart.push({ name, price });
-    updateCartUI();
+    updateCart();
 }
 
-function updateCartUI() {
-    const cartItemsDiv = document.getElementById('sidebar-cart');
-    const cartTotal = document.getElementById('cart-total');
-    document.getElementById('cart-count').innerText = cart.length;
+function updateCart() {
+    const cartItems = document.getElementById('cart-items');
+    const totalDisplay = document.getElementById('total-price');
+    cartItems.innerHTML = '';
     
+    let total = 0;
+    cart.forEach((item, index) => {
+        const li = document.createElement('li');
+        li.textContent = `${item.name} - ${item.price} NTD`;
+        cartItems.appendChild(li);
+        total += item.price;
+    });
+
+    totalDisplay.textContent = total;
+}
+
+function checkout() {
     if (cart.length === 0) {
-        cartItemsDiv.innerHTML = 'Your cart is empty.';
-        cartTotal.innerText = "0";
+        alert("Your cart is empty!");
     } else {
-        let total = 0;
-        cartItemsDiv.innerHTML = cart.map(item => {
-            total += item.price;
-            return `<div class="cart-item"><span>${item.name}</span><span>NT$ ${item.price}</span></div>`;
-        }).join('');
-        cartTotal.innerText = total;
+        alert(`Thank you for shopping at Big J! Total: ${document.getElementById('total-price').textContent} NTD`);
+        cart = [];
+        updateCart();
     }
 }
 
-function updateCheckoutSummary() {
-    const summary = document.getElementById('checkout-summary');
-    if (cart.length === 0) {
-        summary.innerHTML = "<strong>Your cart is empty.</strong>";
-        document.getElementById('confirmBtn').disabled = true;
-    } else {
-        let total = cart.reduce((sum, item) => sum + item.price, 0);
-        summary.innerHTML = `<strong>Items:</strong> ${cart.length}<br><strong>Total:</strong> NT$ ${total}`;
-        document.getElementById('confirmBtn').disabled = false;
-    }
-}
-
-function processOrder() {
-    const name = document.getElementById('custName').value;
-    const address = document.getElementById('deliveryAddr').value;
-
-    if (!name || !address) {
-        return alert("Wait! Please provide a name and delivery address.");
-    }
-
-    const total = cart.reduce((sum, item) => sum + item.price, 0);
-    const order = {
-        date: new Date().toLocaleString(),
-        items: cart.map(i => i.name).join(", "),
-        total: total,
-        address: address
-    };
-
-    history.push(order);
-    localStorage.setItem('shopHistory', JSON.stringify(history));
-    
-    alert(`Success! Delivery scheduled for: ${address}`);
-    
-    cart = [];
-    document.getElementById('custName').value = "";
-    document.getElementById('deliveryAddr').value = "";
-    updateCartUI();
-    showPage('history');
-}
-
-function updateHistoryUI() {
-    const body = document.getElementById('historyBody');
-    if (history.length === 0) {
-        body.innerHTML = '<tr><td colspan="4" style="text-align:center">No history yet.</td></tr>';
-    } else {
-        body.innerHTML = history.map(h => `
-            <tr>
-                <td>${h.date}</td>
-                <td><strong>${h.items}</strong><br><small>📍 ${h.address}</small></td>
-                <td>NT$ ${h.total}</td>
-                <td><b style="color:var(--success)">🚚 En Route</b></td>
-            </tr>
-        `).reverse().join('');
-    }
-}
-
-// Startup
+// Initialize the store
 displayProducts();
-updateHistoryUI();
