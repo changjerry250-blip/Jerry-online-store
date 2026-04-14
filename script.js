@@ -1,11 +1,37 @@
 const products = [
-    { name: "Dried Mango", price: 30, image: "https://www.luvele.de/blogs/recipe-blog/how-to-dry-mango-in-a-food-dehydrator?srsltid=AfmBOooihz1yNDo00kakt-j3DdN0TaX6wSTFe-IlrqhOCXhLqKT1FRsl" },
-    { name: "Instant Noodle", price: 50, image: "https://www.walmart.com/ip/Nissin-Foods-Top-Ramen-Chicken-Flavor-Cup-Noodles-Chicken-2-25-Oz-12-Carton/1628842946" },
-    { name: "Chips", price: 40, image: "https://www.lays.com/recipes/lays-cheddar-and-chive-mashed-potatoes" },
-    { name: "Coke Cola", price: 25, image: "https://www.istockphoto.com/hk/%E5%9C%96%E7%89%87/coke-can" },
-    { name: "Black Tea", price: 60, image: "https://www.joo.com.tw/service026/index.php?action=product_detail&prod_no=P0123400273993" },
-    { name: "Orange Juice", price: 60, image: "https://www.healthline.com/nutrition/orange-juice" }
+    { 
+        name: "Dried Mango", 
+        price: 30, 
+        image: "https://nuts.com/images/rackcdn/ed910ae2d60f0d25bcb8-80550f96b5feb12604f4f720bfefb46d.ssl.cf1.rackcdn.com/944219dac4912bf5-ZOSn836E-zoom.jpg" 
+    },
+    { 
+        name: "Instant Noodle", 
+        price: 50, 
+        image: "https://i5.walmartimages.com/asr/6d05dac7-1656-4b3a-8802-23c81616db5e.42e1f9b4f3bc03f29471750f4880d41d.jpeg" 
+    },
+    { 
+        name: "Chips", 
+        price: 40, 
+        image: "https://cms.lays.com/sites/lays.com/files//2025-12/Lays_XL_Classic_Laydown.png" 
+    },
+    { 
+        name: "Coke Cola", 
+        price: 25, 
+        image: "https://theheavenlycoffeecompany.co.uk/cdn/shop/products/CDTJCCC_PXYCx_pJU.jpg?v=1706114823" 
+    },
+    { 
+        name: "Black Tea", 
+        price: 60, 
+        image: "https://rs.joo.com.tw/website/uploads_product/website_1234/P0123400273993_3_1608122.jpeg?_15471" 
+    },
+    { 
+        name: "Orange Juice", 
+        price: 60, 
+        image: "https://upload.wikimedia.org/wikipedia/commons/0/05/Orangejuice.jpg" 
+    }
 ];
+
+// The rest of your functions (displayProducts, addToCart, etc.) remain the same!
 
 let cart = [];
 
