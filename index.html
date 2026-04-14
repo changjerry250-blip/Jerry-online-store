@@ -3,80 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jerry's Store</title>
+    <title>Big J Online Store</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<header>
-    <h1>Jerry's Store</h1>
-    <div>🛒 Items: <span id="cart-count">0</span></div>
-</header>
+    <header>
+        <h1>Big J Online Store</h1>
+    </header>
 
-<nav>
-    <button onclick="showPage('store')" id="nav-store" class="active">Shop</button>
-    <button onclick="showPage('checkout')" id="nav-checkout">Checkout</button>
-    <button onclick="showPage('history')" id="nav-history">History</button>
-</nav>
+    <main>
+        <section id="product-list" class="product-container">
+            </section>
 
-<div class="container">
-    
-    <div id="page-store" class="page active">
-        <div class="store-layout">
-            <div class="product-grid" id="mainGrid"></div>
-            <div class="card">
-                <h3>Current Cart</h3>
-                <div id="sidebar-cart">Your cart is empty.</div>
-                <hr>
-                <div style="display: flex; justify-content: space-between; font-weight: bold;">
-                    <span>Total:</span>
-                    <span>NT$ <span id="cart-total">0</span></span>
-                </div>
-                <button class="add-btn" style="background: var(--success); margin-top: 15px;" onclick="showPage('checkout')">Go to Checkout</button>
-            </div>
-        </div>
-    </div>
+        <aside id="cart">
+            <h2>Shopping Cart</h2>
+            <ul id="cart-items"></ul>
+            <hr>
+            <p>Total: <span id="total-price">0</span> NTD</p>
+            <button id="checkout-btn" onclick="checkout()">Checkout</button>
+        </aside>
+    </main>
 
-    <div id="page-checkout" class="page">
-        <div style="max-width: 600px; margin: 0 auto;" class="card">
-            <h2>Checkout & Delivery</h2>
-            <div id="checkout-summary" style="margin-bottom: 20px; padding: 10px; background: #f8f9fa; border-radius: 5px;"></div>
-            
-            <label>Recipient Name</label>
-            <input type="text" id="custName" placeholder="Enter full name">
-
-            <label>Delivery Address</label>
-            <input type="text" id="deliveryAddr" placeholder="Enter your address in Taiwan">
-            
-            <label>Payment Method</label>
-            <select id="paymentMethod">
-                <option value="EasyCard">EasyCard (悠遊卡)</option>
-                <option value="LinePay">LinePay</option>
-                <option value="Cash">Cash on Delivery</option>
-            </select>
-
-            <button class="btn-large" id="confirmBtn" onclick="processOrder()">Confirm Purchase</button>
-        </div>
-    </div>
-
-    <div id="page-history" class="page">
-        <h2>Your Purchase History</h2>
-        <div class="card">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Items & Address</th>
-                        <th>Total Paid</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="historyBody"></tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
