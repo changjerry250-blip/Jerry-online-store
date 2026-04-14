@@ -80,10 +80,40 @@ function closeModal() {
 
 function processOrder() {
     const email = document.getElementById('customer-email').value;
-    if (!email) return alert("Please enter email");
-    alert("Order confirmed! Receipt sent to " + email);
-    clearCart();
-    closeModal();
+    const payMethod = document.getElementById('payment-method').value;
+    const total = document.getElementById('total-price').textContent;
+
+    if (!email.includes('@')) {
+        alert("Please enter a valid email address.");
+        return;
+    }
+
+    // 1. Prepare the order summary text
+    let orderSummary = "";
+    Object.values(cart).forEach(item => {
+        orderSummary += `${item.name} x${item.qty} (${item.price * item.qty} NTD)\n`;
+    });
+
+    // 2. Data to send to EmailJS
+    const templateParams = {
+        to_email: email,                    // Buyer
+        seller_email: 'changjerry250@gmail.com', // You (Seller)
+        from_name: "Big J Online Store",
+        message: `New Order Received!\n\nDetails:\n${orderSummary}\nTotal: ${total} NTD\nPayment: ${payMethod}`,
+        customer_email: email
+    };
+
+    // 3. Send the email
+    emailjs.send('YOUR_SERVICE_ID', 'YOUR_TEMPLATE_ID', templateParams)
+        .then(function(response) {
+           console.log('SUCCESS!', response.status, response.text);
+           alert(`Order Confirmed! A receipt has been sent to ${email} and the seller.`);
+           clearCart();
+           closeModal();
+        }, function(error) {
+           console.log('FAILED...', error);
+           alert("Email service failed. Please check your EmailJS configuration.");
+        });
 }
 
 // Initial Run
