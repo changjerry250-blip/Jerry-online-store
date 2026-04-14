@@ -9,22 +9,16 @@ const products = [
 
 let cart = {};
 
-function renderProducts(items) {
+function render() {
     const list = document.getElementById('product-list');
-    list.innerHTML = items.map(p => `
+    list.innerHTML = products.map(p => `
         <div class="product-card">
-            <img src="${p.img}" alt="${p.name}">
+            <img src="${p.img}">
             <h3>${p.name}</h3>
             <p>${p.price} NTD</p>
             <button class="add-btn" onclick="addToCart(${p.id})">Add to Cart</button>
         </div>
     `).join('');
-}
-
-function filterProducts() {
-    const term = document.getElementById('searchInput').value.toLowerCase();
-    const filtered = products.filter(p => p.name.toLowerCase().includes(term));
-    renderProducts(filtered);
 }
 
 function addToCart(id) {
@@ -37,43 +31,37 @@ function addToCart(id) {
     updateUI();
 }
 
-function changeQty(id, delta) {
-    if (cart[id]) {
-        cart[id].qty += delta;
-        if (cart[id].qty <= 0) delete cart[id];
-    }
+function changeQty(id, amount) {
+    cart[id].qty += amount;
+    if (cart[id].qty <= 0) delete cart[id];
     updateUI();
 }
 
 function updateUI() {
     const container = document.getElementById('cart-items-container');
     const totalEl = document.getElementById('total-price');
-    container.innerHTML = '';
-    
-    let total = 0;
     const items = Object.values(cart);
-
+    
     if (items.length === 0) {
-        container.innerHTML = '<p class="empty-msg">Your cart is empty.</p>';
-    } else {
-        items.forEach(item => {
-            total += item.price * item.qty;
-            container.innerHTML += `
-                <div class="cart-item">
-                    <div>
-                        <strong>${item.name}</strong><br>
-                        <small>${item.price} NTD</small>
-                    </div>
-                    <div class="qty-controls">
-                        <button onclick="changeQty(${item.id}, -1)">-</button>
-                        <span>${item.qty}</span>
-                        <button onclick="changeQty(${item.id}, 1)">+</button>
-                    </div>
-                </div>
-            `;
-        });
+        container.innerHTML = '<p>Your cart is empty.</p>';
+        totalEl.innerText = '0';
+        return;
     }
-    totalEl.textContent = total;
+
+    let total = 0;
+    container.innerHTML = items.map(item => {
+        total += item.price * item.qty;
+        return `
+            <div class="cart-item">
+                <span>${item.name} (x${item.qty})</span>
+                <div>
+                    <button onclick="changeQty(${item.id}, -1)">-</button>
+                    <button onclick="changeQty(${item.id}, 1)">+</button>
+                </div>
+            </div>
+        `;
+    }).join('');
+    totalEl.innerText = total;
 }
 
 function clearCart() {
@@ -81,9 +69,8 @@ function clearCart() {
     updateUI();
 }
 
-// Modal Controls
 function openCheckout() {
-    if (Object.keys(cart).length === 0) return alert("Add items first!");
+    if (Object.keys(cart).length === 0) return alert("Cart is empty!");
     document.getElementById('checkout-modal').style.display = 'block';
 }
 
@@ -93,15 +80,11 @@ function closeModal() {
 
 function processOrder() {
     const email = document.getElementById('customer-email').value;
-    const payMethod = document.getElementById('payment-method').value;
-    const total = document.getElementById('total-price').textContent;
-
-    if (!email.includes('@')) return alert("Please enter a valid email!");
-
-    alert(`Order for Big J Received!\nReceipt: ${email}\nTotal: ${total} NTD\nMethod: ${payMethod}`);
+    if (!email) return alert("Please enter email");
+    alert("Order confirmed! Receipt sent to " + email);
     clearCart();
     closeModal();
 }
 
-// Initial Load
-renderProducts(products);
+// Initial Run
+render();
