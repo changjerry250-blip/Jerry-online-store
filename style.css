@@ -1,113 +1,123 @@
-body {
-    font-family: Arial, sans-serif;
+/* 1. Basic Reset */
+* {
+    box-sizing: border-box;
     margin: 0;
-    background-color: #f9f9f9;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f0f2f5;
 }
 
 header {
-    background: #333;
+    background: #222;
     color: white;
+    padding: 40px 20px;
     text-align: center;
-    padding: 20px;
 }
 
 #searchInput {
-    padding: 8px;
+    margin-top: 15px;
+    padding: 10px 20px;
     width: 300px;
-    border-radius: 20px;
+    border-radius: 25px;
     border: none;
+    outline: none;
 }
 
-/* FIX: The Container for side-by-side layout */
+/* 2. MAIN LAYOUT - This keeps items side-by-side */
 .main-container {
-    display: flex;
+    display: flex;       /* Use Flexbox for the two main sections */
+    flex-direction: row; /* Horizontal alignment */
     max-width: 1200px;
-    margin: 20px auto;
-    gap: 20px;
-    padding: 20px;
+    margin: 30px auto;
+    gap: 30px;           /* Space between products and cart */
+    padding: 0 20px;
 }
 
+/* 3. PRODUCT GRID - Controls the snack cards */
 .product-grid {
-    flex: 3;
+    flex: 3;             /* Products take up 3/4 of the width */
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 20px;
 }
 
 .product-card {
     background: white;
-    padding: 15px;
-    border-radius: 10px;
+    padding: 20px;
+    border-radius: 12px;
     text-align: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
 }
 
 .product-card img {
     width: 100%;
     height: 150px;
-    object-fit: contain;
+    object-fit: contain; /* Keeps packaging from being distorted */
+    margin-bottom: 10px;
 }
 
-/* FIX: Refined Add to Cart Button */
+/* 4. SIDEBAR - The Cart area */
+.cart-sidebar {
+    flex: 1;             /* Cart takes up 1/4 of the width */
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    height: fit-content;
+    position: sticky;    /* Cart stays on screen while you scroll */
+    top: 20px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+/* 5. BUTTONS */
 .add-btn {
     background: #333;
     color: white;
     border: none;
-    padding: 8px 15px;
-    border-radius: 20px;
+    padding: 10px 20px;
+    border-radius: 25px;
     cursor: pointer;
-    transition: 0.3s;
+    font-weight: bold;
+    width: 100%;
 }
 
 .add-btn:hover { background: #ff4757; }
 
-.cart-sidebar {
-    flex: 1;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    height: fit-content;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-/* Cart Item Quantity Styling */
-.cart-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 5px;
-}
-
 .place-order-btn {
-    width: 100%;
     background: #28a745;
     color: white;
+    width: 100%;
+    padding: 15px;
     border: none;
-    padding: 10px;
-    border-radius: 5px;
+    border-radius: 8px;
+    font-size: 1rem;
     cursor: pointer;
+    margin-top: 15px;
 }
 
-/* Modal Styling */
+/* 6. MODAL STYLING */
 .modal {
     display: none;
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5);
+    z-index: 100;
+    left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6);
 }
 
 .modal-content {
     background: white;
-    width: 300px;
+    width: 350px;
     margin: 100px auto;
-    padding: 20px;
-    border-radius: 10px;
-}
-
-.modal-content input, .modal-content select {
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 8px;
-    box-sizing: border-box;
+    padding: 30px;
+    border-radius: 15px;
 }
